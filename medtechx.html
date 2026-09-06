@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedTechX — One Platform. Complete Healthcare. | SIH26200 & SIH26133</title>
+  <meta name="description" content="AI-Driven Preventive Healthcare, Remote Patient Monitoring, 24x7 Doctor Marketplace, Emergency SOS, and Centralized EHR." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- MedTechX Stylesheet -->
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+  <!-- ==========================================================================
+       SIDEBAR NAVIGATION
+       ========================================================================== -->
+  <aside class="sidebar">
+    <div class="brand-wrapper">
+      <img src="assets/medtechx-logo.jpg" alt="MedTechX Logo" class="brand-logo-img" />
+      <div class="brand-info">
+        <h1>MedTech<span>X</span></h1>
+        <p id="brandTagline">ONE PLATFORM. COMPLETE HEALTHCARE.</p>
+      </div>
+    </div>
+
+    <div class="sidebar-scroll">
+      <div class="nav-section-title">CORE HEALTH SERVICES</div>
+      <ul class="nav-menu">
+        <li>
+          <a class="nav-link active" data-view="dashboard" onclick="navigateTo('dashboard')">
+            <i class="fa-solid fa-gauge-high"></i> <span>Dashboard Overview</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" data-view="rpm" onclick="navigateTo('rpm')">
+            <i class="fa-solid fa-heart-pulse"></i> <span>Remote Monitoring (RPM)</span>
+            <span class="badge-nav">IoT</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" data-view="triage" onclick="navigateTo('triage')">
+            <i class="fa-solid fa-brain"></i> <span>AI Disease Triage</span>
+            <span class="badge-nav">ML</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" data-view="doctors" onclick="navigateTo('doctors')">
+            <i class="fa-solid fa-user-doctor"></i> <span>Available Now Doctors</span>
+            <span class="badge-nav">24×7</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" data-view="emergency" onclick="navigateTo('emergency')">
+            <i class="fa-solid fa-truck-medical"></i> <span>Emergency Assistance</span>
+            <span class="badge-nav red">SOS</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" data-view="homevisit" onclick="navigateTo('homevisit')">
+            <i class="fa-solid fa-house-medical"></i> <span>Doctor Home Visit</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" data-view="ehr" onclick="navigateTo('ehr')">
+            <i class="fa-solid fa-file-medical"></i> <span>Health Records (EHR)</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" data-view="medications" onclick="navigateTo('medications')">
+            <i class="fa-solid fa-pills"></i> <span>Medication Reminders</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="nav-section-title">SYSTEM & ARCHITECTURE</div>
+      <ul class="nav-menu">
+        <li>
+          <a class="nav-link" data-view="architecture" onclick="navigateTo('architecture')">
+            <i class="fa-solid fa-network-wired"></i> <span>Architecture & Flows</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" data-view="analytics" onclick="navigateTo('analytics')">
+            <i class="fa-solid fa-chart-line"></i> <span>Analytics & SIH Specs</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Emergency Quick Card in Sidebar -->
+      <div class="sos-sidebar-card">
+        <h4><i class="fa-solid fa-triangle-exclamation"></i> Emergency SOS</h4>
+        <p>Immediate 108 ambulance dispatch with consented live GPS sharing.</p>
+        <button class="sos-btn-quick" onclick="triggerEmergencySos()">
+          <i class="fa-solid fa-phone-volume"></i> SOS DISPATCH
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <span>SIH 2026 · SIH26200</span>
+      <span>v2.4 Active</span>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       MAIN WRAPPER & TOPBAR
+       ========================================================================== -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" title="Toggle Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="page-title-box">
+          <h2 id="pageTitle">Dashboard Overview</h2>
+          <p id="pageSub">SIH26200 / SIH26133 · Complete Digital Healthcare Ecosystem</p>
+        </div>
+      </div>
+
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass" style="color: var(--teal-500);"></i>
+        <input type="text" id="globalSearch" placeholder="Search doctors, symptoms, hospitals, medicines..." />
+      </div>
+
+      <div class="topbar-actions">
+        <div class="live-pill">
+          <span class="pulse-dot"></span> 24×7 LIVE
+        </div>
+        
+        <!-- Low Bandwidth / Offline Mode Toggle -->
+        <button class="action-icon-btn" id="bandwidthBtn" onclick="toggleLowBandwidth()" title="Toggle Low-Bandwidth / Rural Mode">
+          <i class="fa-solid fa-tower-broadcast"></i>
+        </button>
+
+        <!-- Language Switcher -->
+        <button class="btn-lang" id="langBtn" onclick="toggleLanguage()" title="Switch Language (EN / HI)">
+          EN
+        </button>
+
+        <!-- Dark Theme Toggle -->
+        <button class="action-icon-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Patient Profile -->
+        <div class="user-profile-btn" onclick="navigateTo('ehr')" style="cursor: pointer;">
+          <div class="user-avatar">RP</div>
+          <div class="user-name">Rameshwar P.</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Low-Bandwidth Notification Banner -->
+    <div class="rural-banner">
+      <div>
+        <i class="fa-solid fa-circle-info"></i> <b>Low-Bandwidth Rural Mode Active:</b> Offline-first caching enabled. Critical actions are synchronized via SMS/IVR gateway fallback.
+      </div>
+      <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.74rem;" onclick="toggleLowBandwidth()">Disable</button>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="content-body">
+
+      <!-- ======================================================================
+           VIEW 1: DASHBOARD OVERVIEW
+           ====================================================================== -->
+      <section class="view-section active" id="dashboard">
+        
+        <!-- Hero Command Banner -->
+        <div class="hero-banner">
+          <div class="hero-glow"></div>
+          <div class="hero-content">
+            <span class="hero-tagline-chip">
+              <i class="fa-solid fa-shield-heart"></i> RIGHT CARE → RIGHT PERSON → RIGHT NOW
+            </span>
+            <h2>One Platform. <span>Complete Healthcare.</span></h2>
+            <p>
+              MedTechX connects patients, rural clinics, and healthcare workers with <b>verified available doctors</b>, 
+              AI-driven disease triage, continuous IoT remote patient monitoring, and instant emergency ambulance dispatch.
+            </p>
+            <div class="hero-quick-actions">
+              <button class="btn btn-white" onclick="navigateTo('triage')">
+                <i class="fa-solid fa-brain"></i> Start AI Triage
+              </button>
+              <button class="btn btn-outline-white" onclick="navigateTo('rpm')">
+                <i class="fa-solid fa-heart-pulse"></i> Live IoT Vitals
+              </button>
+              <button class="btn btn-outline-white" onclick="navigateTo('doctors')">
+                <i class="fa-solid fa-user-doctor"></i> Available Doctors
+              </button>
+              <button class="btn btn-red" onclick="triggerEmergencySos()">
+                <i class="fa-solid fa-truck-medical"></i> Emergency SOS
+              </button>
+            </div>
+          </div>
+
+          <!-- Hero Metrics -->
+          <div class="hero-stats-row">
+            <div class="hero-stat-card">
+              <div class="hero-stat-icon"><i class="fa-solid fa-user-doctor"></i></div>
+              <div class="hero-stat-info">
+                <h4 id="kpiDocs">128</h4>
+                <p>Doctors Available Now</p>
+              </div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-icon"><i class="fa-solid fa-stethoscope"></i></div>
+              <div class="hero-stat-info">
+                <h4 id="kpiConsults">742</h4>
+                <p>Consultations Today</p>
+              </div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-icon"><i class="fa-solid fa-truck-medical" style="color: var(--red-400);"></i></div>
+              <div class="hero-stat-info">
+                <h4 id="kpiSos">36</h4>
+                <p>Emergency Dispatches</p>
+              </div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-icon"><i class="fa-solid fa-bullseye"></i></div>
+              <div class="hero-stat-info">
+                <h4 id="kpiAccuracy">92%</h4>
+                <p>AI Triage Precision</p>
+              </div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-icon"><i class="fa-solid fa-clock"></i></div>
+              <div class="hero-stat-info">
+                <h4>6.4 min</h4>
+                <p>Avg Ambulance Response</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Care Pathways Grid (Low, Moderate, High) -->
+        <div class="card-title-row">
+          <h3 class="card-title"><i class="fa-solid fa-arrows-split-up-and-left"></i> 3-Tier Dynamic Care Routing Pathways</h3>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Urgency-based routing determined by AI Triage & IoT Vitals</span>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 24px;">
+          <div class="card" style="border-top: 4px solid var(--green-500);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <span class="status-badge badge-online">LOW URGENCY</span>
+              <i class="fa-solid fa-video" style="color: var(--green-500); font-size: 1.2rem;"></i>
+            </div>
+            <h4 style="margin-bottom: 6px;">Online Consultation</h4>
+            <p style="font-size: 0.84rem; margin-bottom: 14px;">
+              Mild symptoms, follow-ups, and routine queries. Immediate connection with verified doctors via video/audio/chat with digital e-prescription.
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;">
+              <span class="trust-pill"><i class="fa-solid fa-video"></i> Video Call</span>
+              <span class="trust-pill"><i class="fa-solid fa-file-prescription"></i> E-Prescription</span>
+            </div>
+            <button class="btn btn-secondary" style="width: 100%;" onclick="navigateTo('doctors')">Consult Available Doctor →</button>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--amber-500);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <span class="status-badge badge-busy">MODERATE URGENCY</span>
+              <i class="fa-solid fa-house-medical" style="color: var(--amber-500); font-size: 1.2rem;"></i>
+            </div>
+            <h4 style="margin-bottom: 6px;">Doctor Home Visit</h4>
+            <p style="font-size: 0.84rem; margin-bottom: 14px;">
+              Requires professional in-person physical evaluation. Nearby verified physicians visit elderly, bedridden, or mobility-limited patients at home.
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;">
+              <span class="trust-pill"><i class="fa-solid fa-location-dot"></i> Nearby ETA</span>
+              <span class="trust-pill"><i class="fa-solid fa-shield-check"></i> OTP Verified</span>
+            </div>
+            <button class="btn btn-secondary" style="width: 100%;" onclick="navigateTo('homevisit')">Book Home Visit →</button>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--red-500);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <span class="status-badge" style="background: var(--red-100); color: var(--red-600);">HIGH URGENCY</span>
+              <i class="fa-solid fa-truck-medical" style="color: var(--red-500); font-size: 1.2rem;"></i>
+            </div>
+            <h4 style="margin-bottom: 6px;">Emergency Assistance</h4>
+            <p style="font-size: 0.84rem; margin-bottom: 14px;">
+              Life-threatening emergencies, trauma, and acute cardiac events. Instant 108 dispatch, live ambulance tracking, and hospital bed reservation.
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;">
+              <span class="trust-pill" style="background: var(--red-100); color: var(--red-600);"><i class="fa-solid fa-phone"></i> 108 Dispatch</span>
+              <span class="trust-pill" style="background: var(--red-100); color: var(--red-600);"><i class="fa-solid fa-hospital"></i> Live Beds</span>
+            </div>
+            <button class="btn btn-red" style="width: 100%;" onclick="navigateTo('emergency')">Open Emergency SOS →</button>
+          </div>
+        </div>
+
+        <!-- 6 Core Modules Grid -->
+        <div class="card-title-row">
+          <h3 class="card-title"><i class="fa-solid fa-cubes"></i> 6 Core Building Blocks of MedTechX</h3>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 24px;">
+          <div class="card" style="cursor: pointer;" onclick="navigateTo('rpm')">
+            <div class="hero-stat-icon" style="background: var(--teal-100); color: var(--teal-600); margin-bottom: 12px;">
+              <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <h4>Remote Patient Monitoring (RPM)</h4>
+            <p style="font-size: 0.82rem; margin-top: 6px;">
+              Continuous IoT sensor telemetry streaming heart rate, live ECG trace, SpO2, and blood pressure with automated anomaly detection.
+            </p>
+          </div>
+
+          <div class="card" style="cursor: pointer;" onclick="navigateTo('triage')">
+            <div class="hero-stat-icon" style="background: var(--teal-100); color: var(--teal-600); margin-bottom: 12px;">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+            <h4>AI-Powered Early Disease Triage</h4>
+            <p style="font-size: 0.82rem; margin-top: 6px;">
+              Natural language symptom processing in English, Hindi, and Hinglish. Assesses clinical urgency and routes to the right care pathway.
+            </p>
+          </div>
+
+          <div class="card" style="cursor: pointer;" onclick="navigateTo('doctors')">
+            <div class="hero-stat-icon" style="background: var(--teal-100); color: var(--teal-600); margin-bottom: 12px;">
+              <i class="fa-solid fa-user-doctor"></i>
+            </div>
+            <h4>24×7 Available Now Marketplace</h4>
+            <p style="font-size: 0.82rem; margin-top: 6px;">
+              Real-time doctor presence matching by specialty, language, affordability, and distance rather than rigid appointment calendars.
+            </p>
+          </div>
+
+          <div class="card" style="cursor: pointer;" onclick="navigateTo('emergency')">
+            <div class="hero-stat-icon" style="background: var(--red-100); color: var(--red-600); margin-bottom: 12px;">
+              <i class="fa-solid fa-truck-medical"></i>
+            </div>
+            <h4>Emergency Assistance & SOS</h4>
+            <p style="font-size: 0.82rem; margin-top: 6px;">
+              Instant escalation with authorized ambulance networks, live GPS tracking, and real-time hospital ICU & oxygen bed availability.
+            </p>
+          </div>
+
+          <div class="card" style="cursor: pointer;" onclick="navigateTo('ehr')">
+            <div class="hero-stat-icon" style="background: var(--teal-100); color: var(--teal-600); margin-bottom: 12px;">
+              <i class="fa-solid fa-file-medical"></i>
+            </div>
+            <h4>Electronic Health Records (EHR)</h4>
+            <p style="font-size: 0.82rem; margin-top: 6px;">
+              Centralized, ABDM-aligned longitudinal medical history, digital prescriptions with QR verification, and lab reports repository.
+            </p>
+          </div>
+
+          <div class="card" style="cursor: pointer;" onclick="navigateTo('medications')">
+            <div class="hero-stat-icon" style="background: var(--teal-100); color: var(--teal-600); margin-bottom: 12px;">
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <h4>Medication & Smart Alerts</h4>
+            <p style="font-size: 0.82rem; margin-top: 6px;">
+              Automated pill scheduler, adherence percentage calculation, and multi-channel SMS / WhatsApp reminders for rural patients.
+            </p>
+          </div>
+        </div>
+
+        <!-- SIH Problem Alignment & Uniqueness -->
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title-row">
+              <h3 class="card-title"><i class="fa-solid fa-bullseye"></i> Problem Addressed (SIH26200 / SIH26133)</h3>
+            </div>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <i class="fa-solid fa-circle-check" style="color: var(--teal-500); margin-top: 3px;"></i>
+                <span><b>24×7 Access:</b> Fills the critical late-night gap when rural primary health clinics are closed.</span>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <i class="fa-solid fa-circle-check" style="color: var(--teal-500); margin-top: 3px;"></i>
+                <span><b>Mobility-Limited Care:</b> Home visits for elderly, bedridden patients who cannot travel long distances.</span>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <i class="fa-solid fa-circle-check" style="color: var(--teal-500); margin-top: 3px;"></i>
+                <span><b>Drastic Cost Reduction:</b> Saves an average of ₹620 per visit in travel and informal provider expenses.</span>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <i class="fa-solid fa-circle-check" style="color: var(--teal-500); margin-top: 3px;"></i>
+                <span><b>Unified Ecosystem:</b> Combines consultation, emergency ambulance, diagnostic tests, and pharmacy in one platform.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-title-row">
+              <h3 class="card-title"><i class="fa-solid fa-star"></i> Core Innovations & USP</h3>
+            </div>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <i class="fa-solid fa-circle-check" style="color: var(--amber-500); margin-top: 3px;"></i>
+                <span><b>Real-Time Availability:</b> On-demand doctor marketplace rather than slot-based appointment booking.</span>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <i class="fa-solid fa-circle-check" style="color: var(--amber-500); margin-top: 3px;"></i>
+                <span><b>Multilingual NLP & Hinglish:</b> Natural symptom interpretation without requiring medical terminology.</span>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <i class="fa-solid fa-circle-check" style="color: var(--amber-500); margin-top: 3px;"></i>
+                <span><b>IoT Real-Time Telemetry:</b> Wearable sensor integration with live continuous ECG waveform streaming.</span>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <i class="fa-solid fa-circle-check" style="color: var(--amber-500); margin-top: 3px;"></i>
+                <span><b>Offline SMS/IVR Gateway Fallback:</b> Works seamlessly in remote zero-data tribal and rural regions.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ======================================================================
+           VIEW 2: REMOTE PATIENT MONITORING (RPM) & IOT VITALS
+           ====================================================================== -->
+      <section class="view-section" id="rpm">
+        
+        <!-- Anomaly Banner placeholder -->
+        <div id="vitalsAlertBanner" style="display: none;"></div>
+
+        <div class="rpm-vitals-container">
+          <!-- ECG Trace Card -->
+          <div class="card ecg-card">
+            <div class="ecg-header">
+              <div>
+                <h3 class="card-title"><i class="fa-solid fa-heart-pulse"></i> Live Lead-II ECG Telemetry Stream</h3>
+                <p style="font-size: 0.78rem;">Continuous stream from MedTechX IoT HealthBand • Sampling: 250 Hz</p>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary" id="anomalyBtn" onclick="toggleAnomalySimulation()">
+                  <i class="fa-solid fa-bolt"></i> Simulate Anomaly Spike
+                </button>
+              </div>
+            </div>
+
+            <!-- Canvas for Waveform -->
+            <div class="ecg-canvas-wrapper">
+              <div class="ecg-grid-overlay"></div>
+              <canvas id="ecgCanvas"></canvas>
+            </div>
+
+            <div class="ecg-metrics-strip">
+              <div class="ecg-strip-item">
+                <span>R-R INTERVAL</span>
+                <b id="ecgRr">812 ms</b>
+              </div>
+              <div class="ecg-strip-item">
+                <span>QRS DURATION</span>
+                <b>88 ms</b>
+              </div>
+              <div class="ecg-strip-item">
+                <span>QT INTERVAL</span>
+                <b>390 ms</b>
+              </div>
+              <div class="ecg-strip-item">
+                <span>RHYTHM</span>
+                <b id="ecgRhythm" style="color: var(--green-500);">Sinus Normal</b>
+              </div>
+            </div>
+          </div>
+
+          <!-- IoT Device Info Card -->
+          <div>
+            <div class="card" style="margin-bottom: 16px;">
+              <h4 style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-satellite-dish" style="color: var(--teal-500);"></i> Connected Wearable
+              </h4>
+              <div class="iot-device-card">
+                <i class="fa-solid fa-watch-fitness iot-device-icon"></i>
+                <div class="iot-device-meta">
+                  <h5>MedTechX SmartBand Pro</h5>
+                  <p>MAC: 74:82:C2:10:9B | BLE 5.3</p>
+                </div>
+                <span class="iot-badge-sync"><i class="fa-solid fa-check"></i> SYNCED</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.78rem; margin-top: 12px; color: var(--text-muted);">
+                <span>Battery: <b>88%</b></span>
+                <span>Signal: <b>-48 dBm (Strong)</b></span>
+                <span>Last Sync: <b>Just Now</b></span>
+              </div>
+            </div>
+
+            <div class="card">
+              <h4 style="margin-bottom: 12px;">Automated Alert Rules</h4>
+              <ul style="list-style: none; font-size: 0.8rem; display: flex; flex-direction: column; gap: 8px;">
+                <li>• Heart Rate &gt; 110 or &lt; 50 BPM → <b>Alert Triage</b></li>
+                <li>• SpO2 &lt; 92% → <b>Trigger Emergency Pathway</b></li>
+                <li>• Systolic BP &gt; 160 mmHg → <b>Doctor Call Alert</b></li>
+                <li>• Fall Detection / Immobility &gt; 4m → <b>108 SOS Dispatch</b></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Key Vitals Grid -->
+        <div class="vitals-grid" style="margin-top: 20px;">
+          <!-- Heart Rate -->
+          <div class="vital-tile">
+            <div class="vital-tile-top">
+              <span class="vital-label">HEART RATE</span>
+              <div class="vital-icon-circle" style="background: var(--red-100); color: var(--red-500);">
+                <i class="fa-solid fa-heart"></i>
+              </div>
+            </div>
+            <div class="vital-val" id="vitalHr">74 <small>BPM</small></div>
+            <div class="vital-status status-normal" id="statusHr">
+              <i class="fa-solid fa-circle-check"></i> Normal Sinus Rhythm
+            </div>
+          </div>
+
+          <!-- SpO2 -->
+          <div class="vital-tile">
+            <div class="vital-tile-top">
+              <span class="vital-label">BLOOD OXYGEN (SpO2)</span>
+              <div class="vital-icon-circle" style="background: var(--teal-100); color: var(--teal-500);">
+                <i class="fa-solid fa-lungs"></i>
+              </div>
+            </div>
+            <div class="vital-val" id="vitalSpo2">98 <small>%</small></div>
+            <div class="vital-status status-normal" id="statusSpo2">
+              <i class="fa-solid fa-circle-check"></i> Optimal Oxygenation
+            </div>
+          </div>
+
+          <!-- Blood Pressure -->
+          <div class="vital-tile">
+            <div class="vital-tile-top">
+              <span class="vital-label">BLOOD PRESSURE</span>
+              <div class="vital-icon-circle" style="background: var(--amber-100); color: var(--amber-600);">
+                <i class="fa-solid fa-gauge"></i>
+              </div>
+            </div>
+            <div class="vital-val" id="vitalBp">122/82 <small>mmHg</small></div>
+            <div class="vital-status status-normal">
+              <i class="fa-solid fa-circle-check"></i> Pre-hypertension Controlled
+            </div>
+          </div>
+
+          <!-- Blood Glucose -->
+          <div class="vital-tile">
+            <div class="vital-tile-top">
+              <span class="vital-label">BLOOD GLUCOSE</span>
+              <div class="vital-icon-circle" style="background: var(--green-100); color: var(--green-600);">
+                <i class="fa-solid fa-droplet"></i>
+              </div>
+            </div>
+            <div class="vital-val" id="vitalSugar">108 <small>mg/dL</small></div>
+            <div class="vital-status status-normal">
+              <i class="fa-solid fa-circle-check"></i> Fasting Normal
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ======================================================================
+           VIEW 3: AI-ASSISTED TRIAGE & EARLY DISEASE DETECTION
+           ====================================================================== -->
+      <section class="view-section" id="triage">
+        <div class="triage-layout">
+          
+          <!-- Input Form -->
+          <div class="card">
+            <h3 class="card-title"><i class="fa-solid fa-brain"></i> AI Early Disease Detection & Triage</h3>
+            <p style="font-size: 0.82rem; margin-bottom: 18px;">
+              Describe what you are experiencing in English, Hindi, or Hinglish. Our NLP triage classifier assesses urgency and routes you to the appropriate care.
+            </p>
+
+            <div class="form-group">
+              <label class="form-label">Describe your symptoms in your own words</label>
+              <textarea class="form-textarea" id="triageFreeText" placeholder="e.g. 2 din se tez bukhar hai aur saans lene me thodi dikkat ho rahi hai... or chest pain since morning"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Or quick-select common symptoms</label>
+              <div class="symptom-chips-wrap" id="symptomChipsWrap"></div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Patient Age</label>
+                <input type="number" class="form-input" id="triageAge" value="58" min="1" max="120" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Symptom Duration</label>
+                <select class="form-select" id="triageDuration">
+                  <option value="hours">Less than 24 Hours</option>
+                  <option value="days" selected>1 to 3 Days</option>
+                  <option value="week">1 to 2 Weeks</option>
+                  <option value="chronic">Over a Month</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Known Pre-existing Conditions</label>
+              <select class="form-select" id="triageComorbidity">
+                <option value="none">None / Healthy</option>
+                <option value="diabetes" selected>Diabetes / Hypertension</option>
+                <option value="cardiac">Prior Heart Disease / Stent</option>
+                <option value="asthma">Asthma / Chronic Respiratory</option>
+                <option value="pregnancy">Pregnancy</option>
+              </select>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="runAiTriage()">
+              <i class="fa-solid fa-microchip"></i> Run AI-Assisted Clinical Triage
+            </button>
+
+            <!-- Result Box -->
+            <div class="triage-result-card" id="triageResultCard">
+              <i class="fa-solid fa-stethoscope" style="font-size: 2rem; color: var(--text-muted); margin-bottom: 8px;"></i>
+              <h4>Awaiting Clinical Input</h4>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Select or describe symptoms above to receive real-time urgency classification and pathway recommendations.
+              </p>
+            </div>
+
+            <div class="disclaimer-box">
+              <i class="fa-solid fa-triangle-exclamation"></i> <b>Clinical Safety Notice:</b> 
+              MedTechX AI Triage assists with urgency assessment and routing. It does not replace the diagnosis of a certified physician. In severe emergencies, call 108 immediately.
+            </div>
+          </div>
+
+          <!-- Classifier Pipeline & Audit Log -->
+          <div>
+            <div class="card" style="margin-bottom: 20px;">
+              <h4 style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-gears" style="color: var(--teal-500);"></i> NLP & ML Architecture
+              </h4>
+              <ul style="list-style: none; font-size: 0.82rem; display: flex; flex-direction: column; gap: 8px;">
+                <li>• <b>Preprocessing:</b> Phonetic Hinglish transliteration, stop-word removal, and negation tagging.</li>
+                <li>• <b>Feature Extraction:</b> TF-IDF n-grams + clinical embeddings trained on medical consultations.</li>
+                <li>• <b>Classifier:</b> Ensemble Logistic Regression & Random Forest for 3-class urgency scoring.</li>
+                <li>• <b>Red-Flag Override:</b> Hard-coded clinical rules immediately force High Urgency if acute red flags occur.</li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <h4 style="margin-bottom: 12px;">Recent Triage Session Log</h4>
+              <div style="overflow-x: auto;">
+                <table class="records-table">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Complaint</th>
+                      <th>Urgency</th>
+                      <th>Routed To</th>
+                      <th>Risk</th>
+                    </tr>
+                  </thead>
+                  <tbody id="triageLogTableBody">
+                    <tr>
+                      <td>11:15</td>
+                      <td><b>Fever & Chills</b></td>
+                      <td><span class="status-badge badge-online">LOW</span></td>
+                      <td>Online</td>
+                      <td>28/100</td>
+                    </tr>
+                    <tr>
+                      <td>10:42</td>
+                      <td><b>Acute Knee Swelling</b></td>
+                      <td><span class="status-badge badge-busy">MOD</span></td>
+                      <td>Home Visit</td>
+                      <td>48/100</td>
+                    </tr>
+                    <tr>
+                      <td>09:30</td>
+                      <td><b>Chest Tightness</b></td>
+                      <td><span class="status-badge" style="background: var(--red-100); color: var(--red-600);">HIGH</span></td>
+                      <td>Ambulance</td>
+                      <td>94/100</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           VIEW 4: 24×7 AVAILABLE NOW DOCTOR MARKETPLACE
+           ====================================================================== -->
+      <section class="view-section" id="doctors">
+        
+        <!-- Filters Bar -->
+        <div class="card doc-filter-bar">
+          <div>
+            <label class="form-label">Specialty</label>
+            <select class="form-select" id="filterSpec" onchange="renderDoctorRoster()">
+              <option value="All">All Specialties</option>
+              <option value="General Physician">General Physician</option>
+              <option value="Pediatrics">Pediatrics</option>
+              <option value="Cardiology">Cardiology</option>
+              <option value="Gynecology">Gynecology</option>
+              <option value="Orthopedics">Orthopedics</option>
+              <option value="Dermatology">Dermatology</option>
+              <option value="Psychiatry">Psychiatry</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label">Language</label>
+            <select class="form-select" id="filterLang" onchange="renderDoctorRoster()">
+              <option value="All">All Languages</option>
+              <option value="Hindi">Hindi</option>
+              <option value="English">English</option>
+              <option value="Marathi">Marathi</option>
+              <option value="Tamil">Tamil</option>
+              <option value="Malayalam">Malayalam</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label">Max Fee</label>
+            <select class="form-select" id="filterFee" onchange="renderDoctorRoster()">
+              <option value="9999">Any Fee</option>
+              <option value="250">Up to ₹250</option>
+              <option value="400">Up to ₹400</option>
+              <option value="600">Up to ₹600</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label">Consultation Mode</label>
+            <select class="form-select" id="filterMode" onchange="renderDoctorRoster()">
+              <option value="All">All Modes</option>
+              <option value="Online">Online Video/Audio</option>
+              <option value="Home Visit">Doctor Home Visit</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label">Availability</label>
+            <select class="form-select" id="filterAvail" onchange="renderDoctorRoster()">
+              <option value="All">All Doctors</option>
+              <option value="Available Now" selected>Available Now Only</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Doctor Grid -->
+        <div class="doctor-grid" id="doctorGrid"></div>
+
+      </section>
+
+      <!-- ======================================================================
+           VIEW 5: EMERGENCY ASSISTANCE & SOS AMBULANCE DISPATCH
+           ====================================================================== -->
+      <section class="view-section" id="emergency">
+        
+        <!-- Emergency Hero Strip -->
+        <div class="emergency-hero-strip">
+          <div>
+            <h3><i class="fa-solid fa-truck-medical"></i> Emergency Response Network</h3>
+            <p>
+              Immediate integration with 108 Emergency Medical Services, nearby district hospitals, and trauma facilities. 
+              Location and clinical vitals telemetry are shared securely with responding paramedics.
+            </p>
+          </div>
+          <button class="sos-huge-btn" onclick="triggerEmergencySos()">
+            <i class="fa-solid fa-phone-volume"></i> 108 SOS DISPATCH
+          </button>
+        </div>
+
+        <!-- Active SOS Banner (when triggered) -->
+        <div id="sosActiveBanner" style="display: none; background: rgba(225,29,72,0.12); border: 2px solid var(--red-500); border-radius: var(--radius-md); padding: 18px 24px; margin-bottom: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <i class="fa-solid fa-truck-medical" style="font-size: 2rem; color: var(--red-500); animation: pulseBeacon 1s infinite;"></i>
+            <div>
+              <h4 style="color: var(--red-500); font-size: 1.1rem;">Emergency SOS Active — Paramedic Unit Dispatched!</h4>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                Vehicle ID: <b>MH-31-EMG-1082</b> • Responding Unit: <b>Nagpur District Emergency Team</b>
+              </p>
+            </div>
+          </div>
+          <button class="btn btn-secondary" onclick="cancelEmergencySos()">Cancel SOS</button>
+        </div>
+
+        <!-- Simulated GPS Ambulance Live Tracker -->
+        <div class="card ambulance-tracker-card" id="ambulanceTrackerCard" style="display: none;">
+          <div class="card-title-row">
+            <h3 class="card-title"><i class="fa-solid fa-location-crosshairs"></i> Live Ambulance GPS Tracking Map</h3>
+            <span class="live-pill" style="background: var(--red-100); color: var(--red-600);"><i class="fa-solid fa-circle-dot"></i> SATELLITE TELEMETRY ACTIVE</span>
+          </div>
+
+          <div class="sim-map-container">
+            <div class="map-grid-bg"></div>
+            
+            <!-- SVG connecting route -->
+            <svg class="sim-route-svg">
+              <path d="M 120 70 Q 280 180, 520 140 T 720 190" fill="none" stroke="rgba(18,184,172,0.4)" stroke-width="3" stroke-dasharray="6,6" />
+            </svg>
+
+            <!-- Patient Marker -->
+            <div class="map-marker" style="left: 80%; top: 72%;">
+              <div class="marker-icon" style="background: var(--teal-500);">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <div class="marker-label">You (Patient Location)</div>
+            </div>
+
+            <!-- Ambulance Marker (moving) -->
+            <div class="map-marker ambulance-marker" id="ambulanceMarker" style="left: 20%; top: 30%;">
+              <div class="marker-icon" style="background: var(--red-500); animation: pulseBeacon 1.2s infinite;">
+                <i class="fa-solid fa-truck-medical"></i>
+              </div>
+              <div class="marker-label" style="background: var(--red-600);">Ambulance 108 (ETA 6m)</div>
+            </div>
+
+            <!-- Hospital Marker -->
+            <div class="map-marker" style="left: 15%; top: 25%;">
+              <div class="marker-icon" style="background: var(--navy-800);">
+                <i class="fa-solid fa-hospital"></i>
+              </div>
+              <div class="marker-label">District Hospital Base</div>
+            </div>
+          </div>
+
+          <div class="tracker-info-bar">
+            <div>Distance Remaining: <b id="ambDistance" style="color: var(--teal-500); font-size: 1.05rem;">4.2 km</b></div>
+            <div>Estimated Arrival: <b id="ambEta" style="color: var(--red-500); font-size: 1.05rem;">6m 20s</b></div>
+            <div>Paramedic Contact: <b>+91 98210 10811</b></div>
+            <div>Triage Summary: <span class="status-badge" style="background: var(--red-100); color: var(--red-600);">Transmitted</span></div>
+          </div>
+        </div>
+
+        <!-- Nearby Hospital Live Bed Occupancy & Blood Banks -->
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 14px;"><i class="fa-solid fa-hospital"></i> Nearby Hospital Live Bed Availability</h3>
+            <table class="records-table">
+              <thead>
+                <tr>
+                  <th>Facility</th>
+                  <th>Distance</th>
+                  <th>ICU Beds</th>
+                  <th>Oxygen Beds</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>District Civil Hospital</b></td>
+                  <td>3.4 km</td>
+                  <td><span class="status-badge badge-online">4 Available</span></td>
+                  <td><span class="status-badge badge-online">18 Available</span></td>
+                </tr>
+                <tr>
+                  <td><b>PHC Rampur Center</b></td>
+                  <td>1.8 km</td>
+                  <td><span class="status-badge badge-busy">1 Available</span></td>
+                  <td><span class="status-badge badge-online">6 Available</span></td>
+                </tr>
+                <tr>
+                  <td><b>Sanjeevani Trauma Care</b></td>
+                  <td>6.1 km</td>
+                  <td><span class="status-badge badge-online">5 Available</span></td>
+                  <td><span class="status-badge badge-busy">2 Available</span></td>
+                </tr>
+                <tr>
+                  <td><b>CHC Bhilwada</b></td>
+                  <td>9.7 km</td>
+                  <td><span class="status-badge badge-offline">Full (0)</span></td>
+                  <td><span class="status-badge badge-online">4 Available</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 14px;"><i class="fa-solid fa-droplet" style="color: var(--red-500);"></i> Real-Time Blood Bank Network</h3>
+            <table class="records-table">
+              <thead>
+                <tr>
+                  <th>Blood Bank</th>
+                  <th>Blood Group</th>
+                  <th>Units</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Red Cross District Blood Center</b></td>
+                  <td>O+ Positive</td>
+                  <td>18 Units</td>
+                  <td><span class="status-badge badge-online">In Stock</span></td>
+                </tr>
+                <tr>
+                  <td><b>District Hospital Blood Bank</b></td>
+                  <td>B+ Positive</td>
+                  <td>11 Units</td>
+                  <td><span class="status-badge badge-online">In Stock</span></td>
+                </tr>
+                <tr>
+                  <td><b>LifeLine Blood Bank</b></td>
+                  <td>A− Negative</td>
+                  <td>2 Units</td>
+                  <td><span class="status-badge badge-busy">Low Stock</span></td>
+                </tr>
+                <tr>
+                  <td><b>Jeevan Jyoti Blood Center</b></td>
+                  <td>AB− Negative</td>
+                  <td>0 Units</td>
+                  <td><span class="status-badge badge-offline">Depleted</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ======================================================================
+           VIEW 6: DOCTOR HOME VISIT BOOKING
+           ====================================================================== -->
+      <section class="view-section" id="homevisit">
+        <div class="homevisit-layout">
+          
+          <div class="card">
+            <h3 class="card-title"><i class="fa-solid fa-house-medical"></i> Request Doctor Home Visit</h3>
+            <p style="font-size: 0.82rem; margin-bottom: 18px;">
+              Designed for elderly, bedridden, and mobility-limited patients unable to travel to clinics. Nearby verified physicians visit in-person with clinical evaluation equipment.
+            </p>
+
+            <form onsubmit="submitHomeVisitRequest(event)">
+              <div class="form-group">
+                <label class="form-label">Patient Name</label>
+                <input type="text" class="form-input" id="hvName" value="Rameshwar Patel" required />
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label">Patient Age</label>
+                  <input type="number" class="form-input" value="58" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Specialist Needed</label>
+                  <select class="form-select" id="hvSpec">
+                    <option>General Physician</option>
+                    <option>Geriatric Care (Elderly)</option>
+                    <option>Pediatrics</option>
+                    <option>Orthopedics (Joint/Mobility)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Village / Tehsil Address & Landmark</label>
+                <input type="text" class="form-input" id="hvAddress" value="Plot 14, Near Gram Panchayat, Rampur Village" required />
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label">Preferred Time Slot</label>
+                  <select class="form-select">
+                    <option>As soon as possible (Within 45m)</option>
+                    <option>Today Afternoon (2 PM - 4 PM)</option>
+                    <option>Today Evening (5 PM - 7 PM)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Language Preference</label>
+                  <select class="form-select">
+                    <option>Hindi</option>
+                    <option>Marathi</option>
+                    <option>English</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Reason / Symptoms for Home Visit</label>
+                <textarea class="form-textarea" placeholder="Brief note for visiting doctor..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px;">
+                <i class="fa-solid fa-house-medical"></i> Dispatch Home Visit Request
+              </button>
+            </form>
+          </div>
+
+          <!-- Nearby Home Visit Doctors & Trust Features -->
+          <div>
+            <div class="card" style="margin-bottom: 20px;">
+              <h4 style="margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-location-dot" style="color: var(--teal-500);"></i> Nearby Doctors on Home Call
+              </h4>
+              
+              <div class="nearby-doc-item">
+                <div>
+                  <b style="font-size: 0.92rem;">Dr. Anil Deshmukh</b>
+                  <p style="font-size: 0.76rem; color: var(--teal-500);">General Physician • 2.1 km</p>
+                </div>
+                <div style="text-align: right;">
+                  <span class="status-badge badge-online">ETA 25m</span>
+                  <p style="font-size: 0.78rem; font-weight: 700; margin-top: 4px;">₹200</p>
+                </div>
+              </div>
+
+              <div class="nearby-doc-item">
+                <div>
+                  <b style="font-size: 0.92rem;">Dr. Sunita Rao</b>
+                  <p style="font-size: 0.76rem; color: var(--teal-500);">Gynecology / Women's Care • 3.6 km</p>
+                </div>
+                <div style="text-align: right;">
+                  <span class="status-badge badge-online">ETA 35m</span>
+                  <p style="font-size: 0.78rem; font-weight: 700; margin-top: 4px;">₹400</p>
+                </div>
+              </div>
+
+              <div class="nearby-doc-item">
+                <div>
+                  <b style="font-size: 0.92rem;">Dr. Imran Sheikh</b>
+                  <p style="font-size: 0.76rem; color: var(--teal-500);">Orthopedics • 5.2 km</p>
+                </div>
+                <div style="text-align: right;">
+                  <span class="status-badge badge-busy">ETA 50m</span>
+                  <p style="font-size: 0.78rem; font-weight: 700; margin-top: 4px;">₹600</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h4 style="margin-bottom: 12px;"><i class="fa-solid fa-shield-halved" style="color: var(--teal-500);"></i> Trust & Safety Verification</h4>
+              <ul style="list-style: none; font-size: 0.82rem; display: flex; flex-direction: column; gap: 8px;">
+                <li>• <b>Govt Registration Check:</b> Every visiting physician verified against State Medical Council records.</li>
+                <li>• <b>Visit OTP:</b> Two-factor authentication code required before examination starts.</li>
+                <li>• <b>Digital Audit:</b> Full digital report and ABDM-compliant e-prescription logged immediately.</li>
+                <li>• <b>ASHA Collaboration:</b> Local ASHA worker assistance for female and geriatric patients.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           VIEW 7: ELECTRONIC HEALTH RECORDS (EHR) & PATIENT PORTAL
+           ====================================================================== -->
+      <section class="view-section" id="ehr">
+        
+        <!-- Patient Header Card -->
+        <div class="card ehr-header-card">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div class="user-avatar" style="width: 52px; height: 52px; font-size: 1.2rem;">RP</div>
+            <div>
+              <h3 style="font-size: 1.2rem;">Rameshwar Patel</h3>
+              <p style="font-size: 0.82rem;">Age: 58 • Male • Blood Group: O+ • Language: Hindi / English</p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <span class="patient-id-badge"><i class="fa-solid fa-id-card"></i> ABHA ID: 91-4820-9182-4102</span>
+            <button class="btn btn-primary" onclick="generatePrescriptionModal()">
+              <i class="fa-solid fa-file-prescription"></i> Latest Prescription
+            </button>
+          </div>
+        </div>
+
+        <!-- EHR Details Grid -->
+        <div class="grid-2" style="margin-bottom: 24px;">
+          <!-- Chronic Conditions -->
+          <div class="card">
+            <h4 style="margin-bottom: 14px;"><i class="fa-solid fa-notes-medical" style="color: var(--teal-500);"></i> Chronic Health Conditions</h4>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="padding: 10px; background: var(--bg-input); border-radius: var(--radius-sm); display: flex; justify-content: space-between;">
+                <div>
+                  <b>Type 2 Diabetes Mellitus</b>
+                  <p style="font-size: 0.76rem;">Diagnosed: 2018 • HbA1c: 6.8% (Controlled)</p>
+                </div>
+                <span class="status-badge badge-online">Stable</span>
+              </div>
+              <div style="padding: 10px; background: var(--bg-input); border-radius: var(--radius-sm); display: flex; justify-content: space-between;">
+                <div>
+                  <b>Essential Hypertension</b>
+                  <p style="font-size: 0.76rem;">Diagnosed: 2021 • Monitored daily via SmartBand</p>
+                </div>
+                <span class="status-badge badge-online">Controlled</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Known Allergies -->
+          <div class="card">
+            <h4 style="margin-bottom: 14px;"><i class="fa-solid fa-triangle-exclamation" style="color: var(--amber-500);"></i> Allergies & Immunizations</h4>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;">
+              <span class="trust-pill" style="background: var(--red-100); color: var(--red-600);">Penicillin (Severe)</span>
+              <span class="trust-pill" style="background: var(--amber-100); color: var(--amber-600);">Sulfa Drugs (Moderate)</span>
+              <span class="trust-pill" style="background: var(--teal-100); color: var(--teal-600);">COVID-19 (3 Doses)</span>
+              <span class="trust-pill" style="background: var(--teal-100); color: var(--teal-600);">Influenza (2025)</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">
+              Allergy flags automatically validate against generated e-prescriptions to prevent adverse drug interactions.
+            </p>
+          </div>
+        </div>
+
+        <!-- Prescriptions & Lab History Table -->
+        <div class="card">
+          <h4 style="margin-bottom: 14px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--teal-500);"></i> Prescription & Diagnostic Reports Archive</h4>
+          <table class="records-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Doctor / Lab</th>
+                <th>Diagnosis / Investigation</th>
+                <th>Prescribed Medication</th>
+                <th>Document</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>04 Sep 2026</td>
+                <td><b>Dr. Rakesh Sharma</b></td>
+                <td>Hypertension Routine Follow-up</td>
+                <td>Telmisartan 40mg, Metformin 500mg</td>
+                <td><button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.74rem;" onclick="generatePrescriptionModal()">View Rx</button></td>
+              </tr>
+              <tr>
+                <td>28 Aug 2026</td>
+                <td><b>District Diagnostic Lab</b></td>
+                <td>Comprehensive Metabolic Panel (CMP)</td>
+                <td>Normal kidney & liver profiles</td>
+                <td><button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.74rem;" onclick="alert('Viewing Lab Report: CMP Normal. Blood Urea: 22 mg/dL, Serum Creatinine: 0.9 mg/dL.')">View PDF</button></td>
+              </tr>
+              <tr>
+                <td>12 Aug 2026</td>
+                <td><b>Dr. Arjun Menon</b></td>
+                <td>Cardiology Tele-ECG Review</td>
+                <td>Atorvastatin 10mg, Aspirin 75mg</td>
+                <td><button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.74rem;" onclick="generatePrescriptionModal()">View Rx</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- ======================================================================
+           VIEW 8: MEDICATION & SMART PILL REMINDERS
+           ====================================================================== -->
+      <section class="view-section" id="medications">
+        
+        <!-- Adherence Overview Banner -->
+        <div class="card" style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <h3 class="card-title"><i class="fa-solid fa-pills"></i> Medication Schedule & Smart Reminders</h3>
+            <p style="font-size: 0.84rem;">Check off doses as you take them to maintain your clinical adherence score.</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="text-align: right;">
+              <span style="font-size: 0.74rem; color: var(--text-muted);">WEEKLY ADHERENCE</span>
+              <h3 id="adherenceScore" style="color: var(--teal-500); font-size: 1.6rem;">92%</h3>
+            </div>
+            <div class="status-badge badge-online" style="padding: 6px 12px; font-size: 0.8rem;">
+              <i class="fa-solid fa-award"></i> High Compliance
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Time-of-Day Slots Grid -->
+        <div class="med-schedule-grid">
+          <!-- Morning -->
+          <div class="med-card">
+            <span class="med-time-badge" style="background: var(--amber-100); color: var(--amber-600);">
+              <i class="fa-solid fa-sun"></i> MORNING (08:00 AM)
+            </span>
+
+            <div class="med-item-row">
+              <div class="med-info">
+                <h5>Telmisartan 40mg</h5>
+                <p>1 Tablet • Before Breakfast</p>
+              </div>
+              <input type="checkbox" checked onchange="toggleMedicationItem(this, 3)" style="transform: scale(1.3); cursor: pointer;" />
+            </div>
+
+            <div class="med-item-row">
+              <div class="med-info">
+                <h5>Metformin 500mg</h5>
+                <p>1 Tablet • With Breakfast</p>
+              </div>
+              <input type="checkbox" checked onchange="toggleMedicationItem(this, 3)" style="transform: scale(1.3); cursor: pointer;" />
+            </div>
+          </div>
+
+          <!-- Afternoon -->
+          <div class="med-card">
+            <span class="med-time-badge" style="background: var(--teal-100); color: var(--teal-600);">
+              <i class="fa-solid fa-cloud-sun"></i> AFTERNOON (01:30 PM)
+            </span>
+
+            <div class="med-item-row">
+              <div class="med-info">
+                <h5>Calcium + Vitamin D3</h5>
+                <p>1 Tablet • Post Lunch</p>
+              </div>
+              <input type="checkbox" onchange="toggleMedicationItem(this, 2)" style="transform: scale(1.3); cursor: pointer;" />
+            </div>
+
+            <div class="med-item-row">
+              <div class="med-info">
+                <h5>Multivitamin Complex</h5>
+                <p>1 Capsule • With Water</p>
+              </div>
+              <input type="checkbox" onchange="toggleMedicationItem(this, 2)" style="transform: scale(1.3); cursor: pointer;" />
+            </div>
+          </div>
+
+          <!-- Evening / Night -->
+          <div class="med-card">
+            <span class="med-time-badge" style="background: var(--navy-800); color: #fff;">
+              <i class="fa-solid fa-moon"></i> NIGHT (09:00 PM)
+            </span>
+
+            <div class="med-item-row">
+              <div class="med-info">
+                <h5>Atorvastatin 10mg</h5>
+                <p>1 Tablet • After Dinner</p>
+              </div>
+              <input type="checkbox" onchange="toggleMedicationItem(this, 3)" style="transform: scale(1.3); cursor: pointer;" />
+            </div>
+
+            <div class="med-item-row">
+              <div class="med-info">
+                <h5>Aspirin 75mg</h5>
+                <p>1 Tablet • With Warm Milk</p>
+              </div>
+              <input type="checkbox" onchange="toggleMedicationItem(this, 2)" style="transform: scale(1.3); cursor: pointer;" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SMS / WhatsApp Notification Simulator -->
+        <div class="card">
+          <h4 style="margin-bottom: 12px;"><i class="fa-solid fa-message" style="color: var(--teal-500);"></i> Multi-Channel Rural SMS / WhatsApp Alert Simulator</h4>
+          <p style="font-size: 0.82rem; margin-bottom: 18px;">
+            For patients in low-connectivity rural regions with basic feature phones, MedTechX dispatches automated bilingual SMS and automated voice IVR call alerts.
+          </p>
+          
+          <div style="display: flex; gap: 14px; flex-wrap: wrap; align-items: center;">
+            <input type="text" class="form-input" id="smsPhoneInput" value="+91 98210 48291" style="width: 240px;" />
+            <button class="btn btn-primary" onclick="sendSmsReminderDemo()">
+              <i class="fa-solid fa-paper-plane"></i> Send Test Pill Alert SMS
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ======================================================================
+           VIEW 9: SYSTEM ARCHITECTURE & WORKFLOW (FROM IMAGE 3)
+           ====================================================================== -->
+      <section class="view-section" id="architecture">
+        
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 class="card-title"><i class="fa-solid fa-network-wired"></i> Healthcare System Architecture & Service Delivery Process</h3>
+          <p style="font-size: 0.84rem; margin-top: 4px;">
+            Complete interactive representation of the 7 core architectural diagrams and flowcharts from the MedTechX specification.
+          </p>
+        </div>
+
+        <!-- Tab Selector for 7 Architecture Modules -->
+        <div class="arch-tab-nav">
+          <button class="arch-tab-btn active" onclick="switchArchTab(0)">1. Continuous Improvement</button>
+          <button class="arch-tab-btn" onclick="switchArchTab(1)">2. System Block Diagram</button>
+          <button class="arch-tab-btn" onclick="switchArchTab(2)">3. Working Flowchart</button>
+          <button class="arch-tab-btn" onclick="switchArchTab(3)">4. System Architecture Layers</button>
+          <button class="arch-tab-btn" onclick="switchArchTab(4)">5. Healthcare Service Delivery</button>
+          <button class="arch-tab-btn" onclick="switchArchTab(5)">6. Stakeholder Ecosystem Map</button>
+          <button class="arch-tab-btn" onclick="switchArchTab(6)">7. Key Solution Areas</button>
+        </div>
+
+        <!-- PANEL 0: Continuous Improvement Cycle -->
+        <div class="arch-content-panel active">
+          <div class="card">
+            <h4 style="margin-bottom: 16px;"><i class="fa-solid fa-arrows-spin" style="color: var(--teal-500);"></i> 1. Continuous Improvement Cycle (6 Phases)</h4>
+            <div class="flow-diagram-step-row">
+              <div class="arch-step-box">
+                <div class="arch-step-num">1</div>
+                <h5>Identify Needs</h5>
+                <p>Community assessment, ASHA surveys, and health gap identification.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">2</div>
+                <h5>Plan & Design</h5>
+                <p>Formulate triage pathways and allocate clinical roster resources.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">3</div>
+                <h5>Implement</h5>
+                <p>Deploy digital telemedicine and wearable monitoring programs.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">4</div>
+                <h5>Deliver Care</h5>
+                <p>Execute 24x7 online consultations, home visits, and SOS ambulances.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">5</div>
+                <h5>Monitor & Evaluate</h5>
+                <p>Real-time KPI tracking, response latency, and patient outcomes.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">6</div>
+                <h5>Feedback & Improve</h5>
+                <p>Patient feedback loops and automated model continuous refinement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 1: System Block Diagram -->
+        <div class="arch-content-panel">
+          <div class="card">
+            <h4 style="margin-bottom: 16px;"><i class="fa-solid fa-cubes-stacked" style="color: var(--teal-500);"></i> 2. System Block Diagram (Data Pipeline)</h4>
+            <div class="flow-diagram-step-row">
+              <div class="arch-step-box" style="border-left: 4px solid var(--teal-500);">
+                <div class="arch-step-num">A</div>
+                <h5>Data Sources</h5>
+                <p>Health centers, ASHA field workers, IoT wearables, and patient reports.</p>
+              </div>
+              <div class="arch-step-box" style="border-left: 4px solid var(--navy-700);">
+                <div class="arch-step-num">B</div>
+                <h5>Data Management</h5>
+                <p>Ingestion pipeline, cleansing, FHIR/ABDM integration, and cloud storage.</p>
+              </div>
+              <div class="arch-step-box" style="border-left: 4px solid var(--amber-500);">
+                <div class="arch-step-num">C</div>
+                <h5>Analytics & Insights</h5>
+                <p>AI Triage model, predictive health deterioration, and triage routing.</p>
+              </div>
+              <div class="arch-step-box" style="border-left: 4px solid var(--green-500);">
+                <div class="arch-step-num">D</div>
+                <h5>Output & Action</h5>
+                <p>Doctor dashboard, automated emergency dispatch, and digital prescriptions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 2: Working Flowchart -->
+        <div class="arch-content-panel">
+          <div class="card">
+            <h4 style="margin-bottom: 16px;"><i class="fa-solid fa-code-fork" style="color: var(--teal-500);"></i> 3. Clinical Working Flowchart</h4>
+            <div class="flow-diagram-step-row">
+              <div class="arch-step-box">
+                <div class="arch-step-num">1</div>
+                <h5>Start / Intake</h5>
+                <p>Patient shares complaint via app, SMS, or ASHA tablet.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">2</div>
+                <h5>Collect Vitals</h5>
+                <p>Bluetooth IoT wearable data synced to profile.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">3</div>
+                <h5>Analyze Data</h5>
+                <p>NLP urgency classifier identifies clinical severity.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">4</div>
+                <h5>Execute Care</h5>
+                <p>Routing to Online Doctor, Home Visit, or Emergency SOS.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">5</div>
+                <h5>Evaluate & End</h5>
+                <p>Follow-up scheduled; health record securely archived.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 3: System Architecture Layers -->
+        <div class="arch-content-panel">
+          <div class="layer-stack">
+            <!-- Presentation Layer -->
+            <div class="arch-layer-card" style="border-left: 4px solid var(--teal-500);">
+              <div class="layer-title-badge">
+                <i class="fa-solid fa-desktop" style="color: var(--teal-500);"></i> Presentation Layer
+              </div>
+              <div class="layer-components-wrap">
+                <span class="component-chip">Patient Web Dashboard</span>
+                <span class="component-chip">Mobile Responsive PWA</span>
+                <span class="component-chip">Doctor Portal</span>
+                <span class="component-chip">Admin Analytics Panel</span>
+                <span class="component-chip">ASHA Assisted Tablet View</span>
+              </div>
+            </div>
+
+            <!-- Application Layer -->
+            <div class="arch-layer-card" style="border-left: 4px solid var(--navy-700);">
+              <div class="layer-title-badge">
+                <i class="fa-solid fa-gears" style="color: var(--navy-700);"></i> Application Layer
+              </div>
+              <div class="layer-components-wrap">
+                <span class="component-chip">User Authentication</span>
+                <span class="component-chip">AI Triage Classifier Engine</span>
+                <span class="component-chip">Telemedicine WebRTC Signaling</span>
+                <span class="component-chip">Emergency 108 Dispatch Routing</span>
+                <span class="component-chip">SMS/IVR Fallback Gateway</span>
+              </div>
+            </div>
+
+            <!-- Data Layer -->
+            <div class="arch-layer-card" style="border-left: 4px solid var(--amber-500);">
+              <div class="layer-title-badge">
+                <i class="fa-solid fa-database" style="color: var(--amber-500);"></i> Data Layer
+              </div>
+              <div class="layer-components-wrap">
+                <span class="component-chip">Central PostgreSQL Database</span>
+                <span class="component-chip">Firebase Real-Time Presence</span>
+                <span class="component-chip">Encrypted Health Vault (ABDM)</span>
+                <span class="component-chip">Audit Logs & Telemetry Archive</span>
+              </div>
+            </div>
+
+            <!-- Infrastructure Layer -->
+            <div class="arch-layer-card" style="border-left: 4px solid var(--green-500);">
+              <div class="layer-title-badge">
+                <i class="fa-solid fa-server" style="color: var(--green-500);"></i> Infrastructure Layer
+              </div>
+              <div class="layer-components-wrap">
+                <span class="component-chip">Cloud Servers (AWS / Azure)</span>
+                <span class="component-chip">Edge CDN Caching</span>
+                <span class="component-chip">End-to-End TLS 1.3 Encryption</span>
+                <span class="component-chip">FHIR Interoperability APIs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 4: Healthcare Service Delivery Process -->
+        <div class="arch-content-panel">
+          <div class="card">
+            <h4 style="margin-bottom: 16px;"><i class="fa-solid fa-truck-ramp-box" style="color: var(--teal-500);"></i> 5. Healthcare Service Delivery Pipeline</h4>
+            <div class="flow-diagram-step-row">
+              <div class="arch-step-box">
+                <div class="arch-step-num">1</div>
+                <h5>Service Availability</h5>
+                <p>Health facilities mapped and verified rosters onboarded.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">2</div>
+                <h5>Access & Outreach</h5>
+                <p>Zero-data SMS, local ASHA kiosks, and mobile PWA access.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">3</div>
+                <h5>Service Delivery</h5>
+                <p>High-fidelity consultation, diagnosis, e-prescription.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">4</div>
+                <h5>Quality Assurance</h5>
+                <p>Standardized clinical protocols, audits, and reviews.</p>
+              </div>
+              <div class="arch-step-box">
+                <div class="arch-step-num">5</div>
+                <h5>Outcome & Impact</h5>
+                <p>Early disease prevention and reduced rural travel costs.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 5: Stakeholder Ecosystem Map -->
+        <div class="arch-content-panel">
+          <div class="grid-3">
+            <div class="card">
+              <h4><i class="fa-solid fa-landmark" style="color: var(--teal-500);"></i> Government & Policy</h4>
+              <p style="font-size: 0.82rem; margin-top: 6px;">Ministry of Health (MoHFW), eSanjeevani, Ayushman Bharat Digital Mission (ABDM), and State Health Departments.</p>
+            </div>
+            <div class="card">
+              <h4><i class="fa-solid fa-user-doctor" style="color: var(--teal-500);"></i> Healthcare Providers</h4>
+              <p style="font-size: 0.82rem; margin-top: 6px;">Doctors, ASHA workers, PHC/CHC medical officers, emergency ambulance 108 paramedics, and nurses.</p>
+            </div>
+            <div class="card">
+              <h4><i class="fa-solid fa-people-roof" style="color: var(--teal-500);"></i> Community & Patients</h4>
+              <p style="font-size: 0.82rem; margin-top: 6px;">Rural families, elderly citizens, chronic disease patients, and remote populations.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 6: Key Solution Areas -->
+        <div class="arch-content-panel">
+          <div class="grid-2">
+            <div class="card">
+              <h4><i class="fa-solid fa-map-location-dot" style="color: var(--teal-500);"></i> Physical & Digital Access</h4>
+              <p style="font-size: 0.84rem; margin-top: 6px;">Mobile clinics, last-mile home delivery of essential medicines, and offline-capable PWA architecture.</p>
+            </div>
+            <div class="card">
+              <h4><i class="fa-solid fa-microchip" style="color: var(--teal-500);"></i> Advanced HealthTech</h4>
+              <p style="font-size: 0.84rem; margin-top: 6px;">IoT telemetry stream, real-time Lead-II ECG anomaly detection, and multilingual AI NLP triage engine.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ======================================================================
+           VIEW 10: ANALYTICS & SIH PRESENTATION SPECS
+           ====================================================================== -->
+      <section class="view-section" id="analytics">
+        
+        <!-- SIH Details Banner -->
+        <div class="sih-detail-banner">
+          <div>
+            <span class="sih-badge-tag">SMART INDIA HACKATHON 2026</span>
+            <h3 style="margin-top: 8px; color: #fff;">Problem Statements: SIH26200 & SIH26133</h3>
+            <p style="font-size: 0.84rem; color: #C9D6E8; margin-top: 4px;">
+              Theme: <b>MedTech / BioTech / HealthTech</b> • Category: <b>Software</b> • Team: <b>Clean Coders</b>
+            </p>
+          </div>
+          <div style="text-align: right;">
+            <p style="font-size: 0.74rem; color: #9FB4C8;">EVALUATION PROTOTYPE</p>
+            <b style="color: var(--teal-400); font-size: 1.1rem;">READY FOR DEMO</b>
+          </div>
+        </div>
+
+        <!-- Analytics Charts Grid -->
+        <div class="grid-2" style="margin-bottom: 24px;">
+          <!-- Hourly Consultations Chart -->
+          <div class="card">
+            <h4 style="margin-bottom: 4px;"><i class="fa-solid fa-chart-column" style="color: var(--teal-500);"></i> Consultations by Hour (Pilot Data)</h4>
+            <p style="font-size: 0.76rem; margin-bottom: 12px;">Highlights the critical 41% after-hours surge (10 PM to 4 AM) when physical clinics are closed.</p>
+            
+            <div class="bars-chart-container">
+              <div class="bar-column"><div class="bar-fill" style="height: 22%;"></div><span class="bar-label">6 AM</span></div>
+              <div class="bar-column"><div class="bar-fill" style="height: 48%;"></div><span class="bar-label">9 AM</span></div>
+              <div class="bar-column"><div class="bar-fill" style="height: 62%;"></div><span class="bar-label">12 PM</span></div>
+              <div class="bar-column"><div class="bar-fill" style="height: 54%;"></div><span class="bar-label">3 PM</span></div>
+              <div class="bar-column"><div class="bar-fill" style="height: 76%;"></div><span class="bar-label">6 PM</span></div>
+              <div class="bar-column"><div class="bar-fill" style="height: 96%; background: var(--teal-400);"></div><span class="bar-label">9 PM</span></div>
+              <div class="bar-column"><div class="bar-fill" style="height: 82%; background: var(--teal-400);"></div><span class="bar-label">12 AM</span></div>
+              <div class="bar-column"><div class="bar-fill" style="height: 44%;"></div><span class="bar-label">3 AM</span></div>
+            </div>
+          </div>
+
+          <!-- Triage Routing Breakdown -->
+          <div class="card">
+            <h4 style="margin-bottom: 4px;"><i class="fa-solid fa-chart-pie" style="color: var(--teal-500);"></i> Care Pathway Routing Breakdown</h4>
+            <p style="font-size: 0.76rem; margin-bottom: 14px;">Distribution of 4,860 patient triage encounters across pathways.</p>
+
+            <div class="donut-wrap">
+              <div class="donut-inner">
+                <b>4,860</b>
+                <span>Triaged</span>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; margin-top: 16px; font-size: 0.78rem;">
+              <span><i class="fa-solid fa-square" style="color: var(--green-500);"></i> Low: 58%</span>
+              <span><i class="fa-solid fa-square" style="color: var(--amber-500);"></i> Moderate: 28%</span>
+              <span><i class="fa-solid fa-square" style="color: var(--red-500);"></i> High SOS: 14%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- References and Research -->
+        <div class="card">
+          <h4 style="margin-bottom: 12px;"><i class="fa-solid fa-book-bookmark" style="color: var(--teal-500);"></i> References & Standard Adherence</h4>
+          <ul style="list-style: none; font-size: 0.82rem; display: flex; flex-direction: column; gap: 8px;">
+            <li>• <b>Ministry of Health & Family Welfare (MoHFW):</b> Telemedicine Practice Guidelines, Govt of India.</li>
+            <li>• <b>eSanjeevani OPD:</b> National Teleconsultation Service interoperability standards.</li>
+            <li>• <b>Ayushman Bharat Digital Mission (ABDM):</b> FHIR Release 4 electronic health records standard.</li>
+            <li>• <b>WHO Guidelines:</b> Recommended 1:1000 doctor-to-population ratio targets in rural districts.</li>
+          </ul>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==========================================================================
+       SIMULATED WEBRTC TELECONSULTATION VIDEO MODAL
+       ========================================================================== -->
+  <div class="video-modal-overlay" id="videoCallModal">
+    <div class="video-call-window">
+      <div class="video-call-header">
+        <div>
+          <h4 id="callDocName">Dr. Rakesh Sharma</h4>
+          <p id="callDocSpec" style="font-size: 0.74rem; color: #9FB4C8;">General Physician • District Civil Hospital</p>
+        </div>
+        <div class="call-timer">
+          <i class="fa-solid fa-circle" style="font-size: 0.6rem; animation: pulseBeacon 1s infinite;"></i>
+          <span id="callTimerDisplay">00:00</span>
+        </div>
+      </div>
+
+      <div class="video-call-body">
+        <!-- Video Stream View -->
+        <div class="doctor-video-stream">
+          <div class="simulated-doc-avatar">
+            <i class="fa-solid fa-user-doctor"></i>
+            <h4 style="color: #fff; font-size: 1.1rem;">Live Teleconsultation Connected</h4>
+            <p style="font-size: 0.78rem; color: #9FB4C8;">Encrypted WebRTC High-Definition Channel</p>
+          </div>
+
+          <!-- Patient Self-View Window -->
+          <div class="patient-self-cam">
+            <span><i class="fa-solid fa-user"></i> You (Patient)</span>
+          </div>
+        </div>
+
+        <!-- In-Call Chat Panel -->
+        <div class="call-chat-panel">
+          <div class="call-chat-messages" id="callChatMessages">
+            <div class="chat-bubble doctor">
+              Namaste Rameshwar ji. I am reviewing your live vitals. How are you feeling right now?
+            </div>
+          </div>
+          <div class="call-chat-input-bar">
+            <input type="text" id="callChatInput" placeholder="Type message to doctor..." onkeydown="if(event.key==='Enter') sendCallChatMessage()" />
+            <button class="btn btn-primary" style="padding: 8px 12px;" onclick="sendCallChatMessage()">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Call Control Bar -->
+      <div class="video-call-controls">
+        <button class="ctrl-btn" id="muteBtn" onclick="toggleCallMute()" title="Mute/Unmute Mic">
+          <i class="fa-solid fa-microphone"></i>
+        </button>
+        <button class="ctrl-btn" id="videoBtn" onclick="toggleCallVideo()" title="Toggle Camera">
+          <i class="fa-solid fa-video"></i>
+        </button>
+        <button class="ctrl-btn" onclick="generatePrescriptionModal()" title="View / Generate Rx" style="background: var(--teal-500);">
+          <i class="fa-solid fa-file-prescription"></i>
+        </button>
+        <button class="ctrl-btn end" onclick="endTeleconsultation()" title="End Consultation">
+          <i class="fa-solid fa-phone-slash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       VERIFIABLE E-PRESCRIPTION MODAL
+       ========================================================================== -->
+  <div class="rx-modal-overlay" id="rxModalOverlay">
+    <div class="rx-paper">
+      <div class="rx-header">
+        <div class="rx-brand">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+            <i class="fa-solid fa-heart-pulse" style="color: var(--teal-500); font-size: 1.4rem;"></i>
+            <h3>MedTech<span>X</span> e-Prescription</h3>
+          </div>
+          <p style="font-size: 0.74rem; color: var(--text-muted);">National Telemedicine Service Network • ABDM Ready</p>
+        </div>
+        <div style="text-align: right;">
+          <h4 id="rxDoctorName">Dr. Rakesh Sharma</h4>
+          <p id="rxDoctorReg" style="font-size: 0.74rem; color: var(--text-muted);">Reg No: MCI-48921</p>
+          <p id="rxDate" style="font-size: 0.74rem; color: var(--text-muted);">06 September 2026</p>
+        </div>
+      </div>
+
+      <div class="rx-patient-details">
+        <div>Patient: <b>Rameshwar Patel</b></div>
+        <div>ABHA ID: <b>91-4820-9182-4102</b></div>
+        <div>Age / Gender: <b>58 Y / Male</b></div>
+        <div>Blood Group: <b>O+ Positive</b></div>
+        <div>Diagnosis: <b>Essential Hypertension & Seasonal Bronchitis</b></div>
+        <div>Vitals at Call: <b>BP: 122/82 | SpO2: 98% | HR: 74 BPM</b></div>
+      </div>
+
+      <h4 style="margin-bottom: 10px; color: var(--navy-900);">Rx (Prescribed Medication)</h4>
+      <table class="rx-medicines-table">
+        <thead>
+          <tr>
+            <th>Medicine Name</th>
+            <th>Dosage</th>
+            <th>Frequency</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Telmisartan 40 mg</b></td>
+            <td>1 Tablet</td>
+            <td>1 - 0 - 0 (Morning, Before Food)</td>
+            <td>30 Days</td>
+          </tr>
+          <tr>
+            <td><b>Metformin 500 mg</b></td>
+            <td>1 Tablet</td>
+            <td>1 - 0 - 0 (Morning, After Food)</td>
+            <td>30 Days</td>
+          </tr>
+          <tr>
+            <td><b>Azithromycin 500 mg</b></td>
+            <td>1 Tablet</td>
+            <td>0 - 0 - 1 (Night, After Food)</td>
+            <td>5 Days</td>
+          </tr>
+          <tr>
+            <td><b>Paracetamol 650 mg</b></td>
+            <td>1 Tablet</td>
+            <td>SOS (If fever &gt; 100°F)</td>
+            <td>As needed</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="rx-footer">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-qrcode" style="font-size: 2.2rem; color: var(--navy-900);"></i>
+            <div>
+              <b style="font-size: 0.78rem;">Digital Verification QR</b>
+              <p style="font-size: 0.68rem; color: var(--text-muted);">Signed digitally with cryptographic SHA-256 hash</p>
+            </div>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-family: cursive; font-size: 1.2rem; color: var(--navy-800);">Dr. Rakesh Sharma</div>
+          <p style="font-size: 0.72rem; color: var(--text-muted);">Verified Electronic Signature</p>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 24px; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closePrescriptionModal()">Close</button>
+        <button class="btn btn-primary" onclick="printPrescription()">
+          <i class="fa-solid fa-print"></i> Print / Download PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Engine -->
+  <script src="assets/app.js"></script>
+</body>
+</html>
